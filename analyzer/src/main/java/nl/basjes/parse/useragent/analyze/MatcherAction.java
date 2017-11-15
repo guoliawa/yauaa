@@ -19,13 +19,15 @@ package nl.basjes.parse.useragent.analyze;
 
 import nl.basjes.parse.useragent.analyze.WordRangeVisitor.Range;
 import nl.basjes.parse.useragent.analyze.treewalker.TreeExpressionEvaluator;
+import nl.basjes.parse.useragent.analyze.treewalker.steps.WalkList;
+import nl.basjes.parse.useragent.analyze.treewalker.steps.WalkList.WalkResult;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerBaseVisitor;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerLexer;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherBaseContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherConcatContext;
-import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherConcatPrefixContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherConcatPostfixContext;
+import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherConcatPrefixContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherNormalizeBrandContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherRequireContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherWordRangeContext;
@@ -185,7 +187,7 @@ public abstract class MatcherAction implements Serializable {
         new UnQuoteValues().visit(requiredPattern);
 
         // Now we create an evaluator instance
-        evaluator = new TreeExpressionEvaluator(requiredPattern, matcher.lookups, matcher.lookupSets, verbose);
+        evaluator = new TreeExpressionEvaluator(requiredPattern, matcher, verbose);
 
         // Is a fixed value (i.e. no events will ever be fired)?
         String fixedValue = evaluator.getFixedValue();
@@ -297,7 +299,7 @@ public abstract class MatcherAction implements Serializable {
         matches.add(key, value, result);
     }
 
-    protected abstract void inform(String key, String foundValue);
+    protected abstract void inform(String key, WalkResult foundValue);
 
     /**
      * @return If it is impossible that this can be valid it returns true, else false.
@@ -327,7 +329,7 @@ public abstract class MatcherAction implements Serializable {
      */
     void processInformedMatches() {
         for (MatchesList.Match match : matches) {
-            String matchedValue = evaluator.evaluate(match.result, match.key, match.value);
+            WalkResult matchedValue = evaluator.evaluate(match.result, match.key, match.value);
             if (matchedValue != null) {
                 inform(match.key, matchedValue);
                 break; // We always stick to the first match
