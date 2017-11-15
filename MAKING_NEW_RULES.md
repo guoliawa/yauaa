@@ -562,6 +562,34 @@ The agent.product.(1)version[1]="537" is found immediately while walking through
 So if this one is not present then the other check "Is the version of AppleWebKit equals to 537"
 and the lookup are not even attempted. These kinds of tricks will speedup parsing.
 
+Variables
+=========
+There is the option of predefining a value which is then usable by all rules in a matcher.
+
+A variable is simply a named point in the tree that is found only once.
+A variable is also always in essense a 'require', it must be present for the matcher to continue.
+You can reference a variable by name in a later variable because they are evaluated in the order
+in which they appear in the definition.
+The variable name follows a similar pattern as variable names in languages like Java: [a-zA-Z][a-zA-Z0-9]+
+When referencing a variable (by means of @name )in an expression you must see it as a point in the tree that happens to have a name.
+
+@@@@@@@@@@@@@ TODO: Describe the backtracking effects
+
+This looks like this:
+
+    - matcher:
+        variable:
+        - 'Chrome : agent.product.(1)name="Chrome"'
+        - 'AppleWebKitVersion : agent.product.(1)name="AppleWebKit"^.version'
+        require:
+        - 'LookUp[ChromeLayoutEngineName;@Chrome^.version[1]]'
+        - '@AppleWebKitVersion[1]="537"'
+        - 'agent.product.(1)version[1]="537"' # This is a matching speedup trick
+        extract:
+        - 'LayoutEngineClass     :   1000:"Browser"'
+        - 'LayoutEngineName      :   1000:"AppleWebKit"'
+        - 'LayoutEngineVersion   :   1000:@AppleWebKitVersion'
+
 
 License
 =======
