@@ -71,8 +71,6 @@ import java.util.Set;
 import static nl.basjes.parse.useragent.UserAgent.SYNTAX_ERROR;
 import static nl.basjes.parse.useragent.utils.AntlrUtils.getSourceText;
 
-//import static nl.basjes.parse.useragent.analyze.WordRangeVisitor.MAX_RANGE_IN_HASHMAP;
-
 public class UserAgentTreeFlattener extends UserAgentBaseListener implements Serializable {
     private static final ParseTreeWalker WALKER = new ParseTreeWalker();
     private final Analyzer analyzer;

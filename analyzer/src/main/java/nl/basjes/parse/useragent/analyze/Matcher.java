@@ -396,18 +396,25 @@ public class Matcher implements Serializable {
     public String toString() {
         StringBuilder sb = new StringBuilder(512);
         sb.append("MATCHER.(").append(filename).append("):\n");
+        sb.append("    VARIABLE:\n");
+        for (MatcherAction action : dynamicActions) {
+            if (action instanceof MatcherVariableAction) {
+                sb.append("        @").append(((MatcherVariableAction) action).getVariableName()).append(":    ").append(action.getMatchExpression()).append("\n");
+                sb.append("        -->").append(action.getMatches().toStrings()).append("\n");
+            }
+        }
         sb.append("    REQUIRE:\n");
         for (MatcherAction action : dynamicActions) {
             if (action instanceof MatcherRequireAction) {
                 sb.append("        ").append(action.getMatchExpression()).append("\n");
-                sb.append("        ").append(action.getMatches().toStrings()).append("\n");
+                sb.append("        -->").append(action.getMatches().toStrings()).append("\n");
             }
         }
         sb.append("    EXTRACT:\n");
         for (MatcherAction action : dynamicActions) {
             if (action instanceof MatcherExtractAction) {
                 sb.append("        ").append(action.toString()).append("\n");
-                sb.append("        ").append(action.getMatches().toStrings()).append("\n");
+                sb.append("        -->").append(action.getMatches().toStrings()).append("\n");
             }
         }
         for (MatcherAction action : fixedStringActions) {
