@@ -229,10 +229,20 @@ public class Matcher implements Serializable {
             }
         }
 
+        // Verify that a variable only contains the variables that have been defined BEFORE it (also not referencing itself).
+        // If all is ok we link them
+        Set<MatcherAction> seenVariables = new HashSet<>(variableActions.size());
         for (MatcherVariableAction variableAction: variableActions) {
+            seenVariables.add(variableAction); // Add myself
             Set<MatcherAction> interestedActions = informMatcherActionsAboutVariables.get(variableAction.getVariableName());
             if (interestedActions != null && !interestedActions.isEmpty()) {
                 variableAction.setInterestedActions(interestedActions);
+                for (MatcherAction interestedAction : interestedActions) {
+                    if (seenVariables.contains(interestedAction)) {
+                        throw new InvalidParserConfigurationException("Syntax error: The line >>" + interestedAction + "<< " +
+                            "is referencing variable @"+variableAction.getVariableName()+ " which is not defined yet.");
+                    }
+                }
             }
         }
 
@@ -399,7 +409,8 @@ public class Matcher implements Serializable {
         sb.append("    VARIABLE:\n");
         for (MatcherAction action : dynamicActions) {
             if (action instanceof MatcherVariableAction) {
-                sb.append("        @").append(((MatcherVariableAction) action).getVariableName()).append(":    ").append(action.getMatchExpression()).append("\n");
+                sb.append("        @").append(((MatcherVariableAction) action).getVariableName())
+                    .append(":    ").append(action.getMatchExpression()).append("\n");
                 sb.append("        -->").append(action.getMatches().toStrings()).append("\n");
             }
         }
