@@ -445,7 +445,7 @@ public abstract class MatcherAction implements Serializable {
     private int calculateInformPath(String treeName, StepWordRangeContext tree) {
         Range range = WordRangeVisitor.getRange(tree.wordRange());
         matcher.lookingForRange(treeName, range);
-        return calculateInformPath(treeName + "[" + range.first + "-" + range.last + "]", tree.nextStep);
+        return calculateInformPath(treeName + range, tree.nextStep);
     }
 
     // ============================================================================================================

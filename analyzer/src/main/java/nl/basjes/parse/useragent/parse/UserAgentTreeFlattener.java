@@ -407,14 +407,14 @@ public class UserAgentTreeFlattener extends UserAgentBaseListener implements Ser
             for (Range range : ranges) {
                 String value = splitter.getSplitRange(text, splitList, range);
                 if (value != null) {
-                    inform(ctx, ctx, name + "[" + range.getFirst() + "-" + range.getLast() + "]", value, true);
+                    inform(ctx, ctx, name + range, value, true);
                 }
             }
         } else {
             for (Range range : ranges) {
                 String value = splitter.getSplitRange(text, range);
                 if (value != null) {
-                    inform(ctx, ctx, name + "[" + range.getFirst() + "-" + range.getLast() + "]", value, true);
+                    inform(ctx, ctx, name + range, value, true);
                 }
             }
         }
