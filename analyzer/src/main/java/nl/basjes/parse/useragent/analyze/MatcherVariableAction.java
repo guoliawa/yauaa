@@ -69,7 +69,7 @@ public class MatcherVariableAction extends MatcherAction {
             }
 
             for (MatcherAction action: interestedActions) {
-                action.inform(variableName, newlyFoundValue.value, newlyFoundValue.tree);
+                action.inform(variableName, newlyFoundValue.getValue(), newlyFoundValue.getTree());
             }
         } else {
             if (verbose) {
@@ -93,7 +93,7 @@ public class MatcherVariableAction extends MatcherAction {
         return "VARIABLE: (" + variableName + "): " + expression;
     }
 
-    public void setInterestedActions(Set<MatcherAction> interestedActions) {
-        this.interestedActions = interestedActions;
+    public void setInterestedActions(Set<MatcherAction> newInterestedActions) {
+        this.interestedActions = newInterestedActions;
     }
 }

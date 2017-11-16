@@ -51,7 +51,7 @@ public class TreeExpressionEvaluator implements Serializable {
         this.requiredPatternText = requiredPattern.getText();
         this.matcher = matcher;
         this.verbose = verbose;
-        walkList = new WalkList(requiredPattern, matcher.lookups, matcher.lookupSets, verbose);
+        walkList = new WalkList(requiredPattern, matcher.getLookups(), matcher.getLookupSets(), verbose);
         this.fixedValue = calculateFixedValue(requiredPattern);
     }
 
@@ -73,7 +73,7 @@ public class TreeExpressionEvaluator implements Serializable {
                 // No we know this is a fixed value. Yet we can have a problem in the lookup that was
                 // configured. If we have this then this is a FATAL error (it will fail always everywhere).
 
-                Map<String, String> lookup = matcher.lookups.get(ctx.lookup.getText());
+                Map<String, String> lookup = matcher.getLookups().get(ctx.lookup.getText());
                 if (lookup == null) {
                     throw new InvalidParserConfigurationException("Missing lookup \"" + ctx.lookup.getText() + "\" ");
                 }
@@ -106,7 +106,7 @@ public class TreeExpressionEvaluator implements Serializable {
         }
         WalkResult result = walkList.walk(tree, value);
         if (verbose) {
-            LOG.info("Evaluate: Result = {}", result == null ? "null" : result.value);
+            LOG.info("Evaluate: Result = {}", result == null ? "null" : result.getValue());
         }
         return result;
     }

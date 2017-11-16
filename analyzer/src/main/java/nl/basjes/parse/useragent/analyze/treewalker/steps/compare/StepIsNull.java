@@ -27,7 +27,7 @@ public class StepIsNull extends Step {
     public WalkResult walk(ParseTree tree, String value) {
         WalkResult actualValue = walkNextStep(tree, value);
 
-        if (actualValue == null || actualValue.value == null) {
+        if (actualValue == null || actualValue.getValue() == null) {
             return new WalkResult(tree, "<<<Null Value>>>");
         }
         return null;

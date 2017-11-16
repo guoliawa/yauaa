@@ -50,8 +50,8 @@ public class Matcher implements Serializable {
     private UserAgent newValuesUserAgent = new UserAgent();
 
     private long actionsThatRequireInput;
-    public final Map<String, Map<String, String>> lookups;
-    public final Map<String, Set<String>> lookupSets;
+    private final Map<String, Map<String, String>> lookups;
+    private final Map<String, Set<String>> lookupSets;
     private boolean verbose;
     private boolean permanentVerbose;
 
@@ -66,6 +66,14 @@ public class Matcher implements Serializable {
         this.fixedStringActions = new ArrayList<>();
         this.variableActions = new ArrayList<>();
         this.dynamicActions = new ArrayList<>();
+    }
+
+    public Map<String, Map<String, String>> getLookups() {
+        return lookups;
+    }
+
+    public Map<String, Set<String>> getLookupSets() {
+        return lookupSets;
     }
 
     static class ConfigLine {

@@ -75,7 +75,7 @@ public class MatcherExtractAction extends MatcherAction {
          * So we always use the first value we find.
          */
         if (this.foundValue == null) {
-            this.foundValue = newlyFoundValue.value;
+            this.foundValue = newlyFoundValue.getValue();
             if (verbose) {
                 LOG.info("KEPT  : EXTRACT ({}): {}", attribute, key);
             }
