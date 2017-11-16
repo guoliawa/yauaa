@@ -68,8 +68,10 @@ public class MatcherVariableAction extends MatcherAction {
                 LOG.info("KEPT  : VARIABLE ({}): {}", variableName, key);
             }
 
-            for (MatcherAction action: interestedActions) {
-                action.inform(variableName, newlyFoundValue.getValue(), newlyFoundValue.getTree());
+            if (interestedActions != null && !interestedActions.isEmpty()) {
+                for (MatcherAction action : interestedActions) {
+                    action.inform(variableName, newlyFoundValue.getValue(), newlyFoundValue.getTree());
+                }
             }
         } else {
             if (verbose) {

@@ -241,8 +241,7 @@ public class Matcher implements Serializable {
         allDynamicActions.addAll(dynamicActions);
         dynamicActions = allDynamicActions;
 
-        actionsThatRequireInput = countActionsThatMustHaveMatches(variableActions);
-        actionsThatRequireInput += countActionsThatMustHaveMatches(dynamicActions);
+        actionsThatRequireInput = countActionsThatMustHaveMatches(dynamicActions);
 
         if (verbose) {
             LOG.info("---------------------------");

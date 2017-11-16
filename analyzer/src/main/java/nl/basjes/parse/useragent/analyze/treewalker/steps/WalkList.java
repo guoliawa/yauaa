@@ -100,6 +100,14 @@ public class WalkList implements Serializable {
         public String getValue() {
             return value;
         }
+
+        @Override
+        public String toString() {
+            return "WalkResult{" +
+                "tree=" + tree.getText() +
+                ", value='" + value + '\'' +
+                '}';
+        }
     }
 
     public WalkList(ParserRuleContext requiredPattern,
@@ -285,6 +293,13 @@ public class WalkList implements Serializable {
             // Always add this one, it's special
             steps.add(new StepIsNull());
             visit(ctx.matcher());
+            return null; // Void
+        }
+
+        @Override
+        public Void visitPathVariable(UserAgentTreeWalkerParser.PathVariableContext ctx) {
+            fromHereItCannotBeInHashMapAnymore();
+            visitNext(ctx.nextStep);
             return null; // Void
         }
 

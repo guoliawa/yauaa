@@ -29,7 +29,7 @@ import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherConcatP
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherConcatPrefixContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherNormalizeBrandContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherRequireContext;
-import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherVariableContext;
+import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.PathVariableContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.MatcherWordRangeContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.StepContainsValueContext;
 import nl.basjes.parse.useragent.parser.UserAgentTreeWalkerParser.StepWordRangeContext;
@@ -366,10 +366,6 @@ public abstract class MatcherAction implements Serializable {
     }
 
     private int calculateInformPath(String treeName, MatcherContext tree) {
-        if (tree instanceof MatcherVariableContext) {
-            matcher.informMeAboutVariable(this, ((MatcherVariableContext) tree).variable.getText());
-            return 0;
-        }
         if (tree instanceof MatcherPathContext) {
             return calculateInformPath(treeName, ((MatcherPathContext) tree).basePath());
         }
@@ -402,6 +398,10 @@ public abstract class MatcherAction implements Serializable {
     private int calculateInformPath(String treeName, BasePathContext tree) {
         // Useless to register a fixed value
 //             case "PathFixedValueContext"         : calculateInformPath(treeName, (PathFixedValueContext)         tree); break;
+        if (tree instanceof PathVariableContext) {
+            matcher.informMeAboutVariable(this, ((PathVariableContext) tree).variable.getText());
+            return 0;
+        }
         if (tree instanceof PathWalkContext) {
             return calculateInformPath(treeName, ((PathWalkContext) tree).nextStep);
         }

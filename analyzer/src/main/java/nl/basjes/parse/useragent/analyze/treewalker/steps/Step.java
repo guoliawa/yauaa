@@ -81,16 +81,16 @@ public abstract class Step implements Serializable {
             return null;
         }
 
+        ParseTree parent = tree.getParent();
+
         // Needed because of the way the ANTLR rules have been defined.
-        if (tree instanceof UserAgentParser.ProductNameWordsContext     ||
-            tree instanceof UserAgentParser.ProductNameEmailContext     ||
-            tree instanceof UserAgentParser.ProductNameUuidContext      ||
-            tree instanceof UserAgentParser.ProductNameKeyValueContext  ||
-            tree instanceof UserAgentParser.ProductNameVersionContext
+        if (parent instanceof UserAgentParser.ProductNameContext ||
+            parent instanceof UserAgentParser.ProductVersionContext ||
+            parent instanceof UserAgentParser.ProductVersionWithCommasContext
             ) {
-            return up(tree.getParent());
+            return up(parent);
         }
-        return tree.getParent();
+        return parent;
     }
 
     public static boolean treeIsSeparator(ParseTree tree) {
